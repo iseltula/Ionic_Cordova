@@ -1,52 +1,55 @@
 (function () {
     'use strict';
 
-    angular.module('eliteApp').controller('TeamDetailCtrl', ['$stateParams', 'eliteApi', '$ionicPopup', TeamDetailCtrl]);
+    angular.module('eliteApp').controller('TeamDetailCtrl', ['$stateParams', '$ionicPopup', 'eliteApi', 'myTeamsService', TeamDetailCtrl]);
 
-    function TeamDetailCtrl($stateParams, eliteApi, $ionicPopup) {
-        var vm = this;
-        
-        //console.log("$stateParams", $stateParams);
+    function TeamDetailCtrl($stateParams, $ionicPopup, eliteApi, myTeamsService) {
+        var vm = this,
+            team = null,
+            leagueData = null;
+
+        console.log("$stateParams", $stateParams);
         vm.teamId = Number($stateParams.id);
-        
-        var data = eliteApi.getLeagueData();
-        
-        
-        var team = _.chain(data.teams)
-                    .map("divisionTeams")
-                    .flatten()
-                    .find({ "id": vm.teamId })
-                    .value();
 
-        vm.teamName = team.name;
+        eliteApi.getLeagueData().then(function(data){
+            team = _.chain(data.teams)
+                        .flatten("divisionTeams")
+                        .find({ "id": vm.teamId })
+                        .value();
 
-        vm.games = _.chain(data.games)
-                    .filter(isTeamInGame)
-                    .map(function (item) {
-                        var isTeam1 = (item.team1Id === vm.teamId ? true : false);
-                        var opponentName = isTeam1 ? item.team2 : item.team1;
-                        var scoreDisplay = getScoreDisplay(isTeam1, item.team1Score, item.team2Score);
-                        return {
-                            gameId: item.id,
-                            opponent: opponentName,
-                            time: item.time,
-                            location: item.location,
-                            locationUrl: item.locationUrl,
-                            scoreDisplay: scoreDisplay,
-                            homeAway: (isTeam1 ? "vs." : "at")
-                        };
-                    })
-                    .value();
+            vm.teamName = team.name;
 
-        vm.teamStanding = _.chain(data.standings)
-                           .map("divisionStandings")
-                           .flatten()
-                           .find({ "teamId": vm.teamId })
-                           .value();
+            vm.games = _.chain(data.games)
+                        .filter(isTeamInGame)
+                        .map(function (item) {
+                            var isTeam1 = (item.team1Id === vm.teamId ? true : false);
+                            var opponentName = isTeam1 ? item.team2 : item.team1;
+                            var scoreDisplay = getScoreDisplay(isTeam1, item.team1Score, item.team2Score);
+                            return {
+                                gameId: item.id,
+                                opponent: opponentName,
+                                time: item.time,
+                                location: item.location,
+                                locationUrl: item.locationUrl,
+                                scoreDisplay: scoreDisplay,
+                                homeAway: (isTeam1 ? "vs." : "at")
+                            };
+                        })
+                        .value();
 
-        vm.following = false;
+            vm.teamStanding = _.chain(data.standings)
+                               .flatten("divisionStandings")
+                               .find({ "teamId": vm.teamId })
+                               .value();
 
-                vm.toggleFollow = function(){
+            leagueData = data.league;
+        });
+
+
+        //vm.following = false;
+        vm.following = myTeamsService.isFollowingTeam(vm.teamId.toString());
+
+        vm.toggleFollow = function(){
 
             if (vm.following) {
                 var confirmPopup = $ionicPopup.confirm({
@@ -56,10 +59,12 @@
                 confirmPopup.then(function(res) {
                     if(res) {
                         vm.following = !vm.following;
+                        myTeamsService.unfollowTeam(team.id);
                     }
                 });
             } else{
                 vm.following = !vm.following;
+                myTeamsService.followTeam({ id: team.id, name: team.name, leagueId: leagueData.id, leagueName: leagueData.name });
             }
         };
 
@@ -81,4 +86,3 @@
         }
     };
 })();
-
