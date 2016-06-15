@@ -13,7 +13,8 @@
 
         eliteApi.getLeagueData().then(function(data){
             team = _.chain(data.teams)
-                        .flatten("divisionTeams")
+                        .map("divisionTeams")
+                        .flatten()
                         .find({ "id": vm.teamId })
                         .value();
 
@@ -38,7 +39,8 @@
                         .value();
 
             vm.teamStanding = _.chain(data.standings)
-                               .flatten("divisionStandings")
+                               .map("divisionStandings")
+                               .flatten()
                                .find({ "teamId": vm.teamId })
                                .value();
 
