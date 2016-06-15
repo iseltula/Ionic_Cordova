@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.2.29
+ * @license AngularJS v1.2.21
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -237,13 +237,6 @@ function makeMap(str) {
  * @param {object} handler
  */
 function htmlParser( html, handler ) {
-  if (typeof html !== 'string') {
-    if (html === null || typeof html === 'undefined') {
-      html = '';
-    } else {
-      html = '' + html;
-    }
-  }
   var index, chars, match, stack = [], last = html, text;
   stack.last = function() { return stack[ stack.length - 1 ]; };
 
@@ -597,7 +590,7 @@ angular.module('ngSanitize', []).provider('$sanitize', $SanitizeProvider);
  */
 angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
   var LINKY_URL_REGEXP =
-        /((ftp|https?):\/\/|(mailto:)?[A-Za-z0-9._%+-]+@)\S*[^\s.;,(){}<>"]/,
+        /((ftp|https?):\/\/|(mailto:)?[A-Za-z0-9._%+-]+@)\S*[^\s.;,(){}<>]/,
       MAILTO_REGEXP = /^mailto:/;
 
   return function(text, target) {
@@ -634,9 +627,9 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
         html.push(target);
         html.push('" ');
       }
-      html.push('href="',
-                url.replace('"', '&quot;'),
-                '">');
+      html.push('href="');
+      html.push(url);
+      html.push('">');
       addText(text);
       html.push('</a>');
     }
