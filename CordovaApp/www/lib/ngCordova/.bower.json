@@ -1,34 +1,14 @@
 {
   "name": "ngCordova",
-  "version": "0.1.26-alpha",
+  "version": "0.1.3-alpha",
   "homepage": "http://ngCordova.com/",
   "authors": [
     "Max Lynch <max@drifty.com>",
-    "Paolo Bernasconi <paolo.enrico.bernasconi@gmail.com>",
-    "Chad Campbell <chad.campbell@ecofic.com>"
+    "Paolo Bernasconi <paolo.enrico.bernasconi@gmail.com>"
   ],
   "description": "AngularJS Cordova wrappers for common Cordova plugins.",
-  "main": [
-    "./dist/ng-cordova.js"
-  ],
-  "ignore": [
-    "**/.*",
-    "gulpfile.js",
-    "test",
-    "src",
-    "config",
-    "demo",
-    "CONTRIBUTING.md",
-    "CODE_OF_CONDUCT.md"
-  ],
-  "dependencies": {
-    "angular": ">= 1.2.23"
-  },
+  "main": "./dist/ng-cordova.js",
   "keywords": [
-    "ngCordova",
-    "ng-cordova",
-    "ngcordova",
-    "ng cordova",
     "cordova",
     "phonegap",
     "angular",
@@ -38,19 +18,14 @@
   ],
   "license": "MIT",
   "private": false,
-  "devDependencies": {
-    "angular": ">= 1.2.23",
-    "angular-mocks": ">= 1.2.23",
-    "jquery": "~2.1.1"
-  },
-  "_release": "0.1.26-alpha",
+  "_release": "0.1.3-alpha",
   "_resolution": {
     "type": "version",
-    "tag": "v0.1.26-alpha",
-    "commit": "19871067c61b2454fdf0a54517075f8483b489e2"
+    "tag": "v0.1.3-alpha",
+    "commit": "d3b40f33b3d30d0609fa59c04bb78dde074934ba"
   },
-  "_source": "https://github.com/driftyco/ng-cordova.git",
-  "_target": "^0.1.26-alpha",
+  "_source": "git://github.com/driftyco/ng-cordova.git",
+  "_target": "~0.1.3-alpha",
   "_originalSource": "ngCordova",
   "_direct": true
 }

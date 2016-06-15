@@ -8,9 +8,8 @@
 
         vm.takePicture = function () {
             var options = { 
-                quality : 100, 
+                quality : 75, 
                 destinationType : Camera.DestinationType.DATA_URL, 
-                //destinationType: Camera.DestinationType.FILE_URI,
                 sourceType : Camera.PictureSourceType.CAMERA, 
                 allowEdit : true,
                 encodingType: Camera.EncodingType.JPEG,
@@ -21,30 +20,8 @@
             };
 
             $cordovaCamera.getPicture(options).then(function (imageData) {
-            //$cordovaCamera.getPicture(options).then(function (imageUri) {
                 // Success! Image data is here
                 vm.imgSrc = "data:image/jpeg;base64," + imageData;
-                //vm.imgSrc = imageUri;
-
-                // Now start image manipulation
-                var canvasDom = document.getElementById("picCanvas");
-                var canvas = canvasDom.getContext("2d");
-
-                var img = new Image();
-                img.src = "data:image/jpeg;base64," + imageData;
-                //img.src = imageUri;
-
-                img.onload = function () {
-                    canvas.drawImage(img, 0, 0, 300, 300);
-
-                //    //$scope.$apply();
-
-                    canvas.fillStyle = "blue";
-                    canvas.font = "bold 16px Arial";
-                    canvas.fillText("Hello World!", 100, 100);
-                };
-
-
             }, function (err) {
                 alert("An error occured: " + err);
             });
